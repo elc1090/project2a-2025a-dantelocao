@@ -104,3 +104,15 @@ function requestCommitsUserRepo(username, repoName) {
         headers: { 'Authorization': `token ${token}` }
     });
 }
+
+
+function requestUserRepoByName(username, repoName) {
+    // create a variable to hold the `Promise` returned from `fetch`
+    return Promise.resolve(fetch(`https://api.github.com/repos/${username}/${repoName}`,
+        {
+            headers: {
+                'Authorization': `token ${token}`
+            }
+        }
+    ));
+}
