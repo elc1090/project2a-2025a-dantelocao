@@ -1,5 +1,4 @@
 const gitHubForm = document.getElementById('gitHubForm');
-//const token = ''; chave github
 
 gitHubForm.addEventListener('submit', (e) => {
     e.preventDefault();
@@ -86,33 +85,15 @@ gitHubForm.addEventListener('submit', (e) => {
         .catch(error => console.error("Erro ao buscar repositórios do usuário:", error));
 });
 
-// --- Funções de API com autenticação ---
+// --- Funções de API
 function requestUserRepos(username) {
-    return fetch(`https://api.github.com/users/${username}/repos`, {
-        headers: { 'Authorization': `token ${token}` }
-    });
+    return fetch(`https://api.github.com/users/${username}/repos`);
 }
 
 function requestUserRepoByName(username, repoName) {
-    return fetch(`https://api.github.com/repos/${username}/${repoName}`, {
-        headers: { 'Authorization': `token ${token}` }
-    });
+    return fetch(`https://api.github.com/repos/${username}/${repoName}`);
 }
 
 function requestCommitsUserRepo(username, repoName) {
-    return fetch(`https://api.github.com/repos/${username}/${repoName}/commits`, {
-        headers: { 'Authorization': `token ${token}` }
-    });
-}
-
-
-function requestUserRepoByName(username, repoName) {
-    // create a variable to hold the `Promise` returned from `fetch`
-    return Promise.resolve(fetch(`https://api.github.com/repos/${username}/${repoName}`,
-        {
-            headers: {
-                'Authorization': `token ${token}`
-            }
-        }
-    ));
+    return fetch(`https://api.github.com/repos/${username}/${repoName}/commits`);
 }
