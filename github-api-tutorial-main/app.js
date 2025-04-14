@@ -1,64 +1,106 @@
-// Get the GitHub username input form
 const gitHubForm = document.getElementById('gitHubForm');
+//const token = ''; chave github
 
-// Listen for submissions on GitHub username input form
 gitHubForm.addEventListener('submit', (e) => {
-
-    // Prevent default form submission action
     e.preventDefault();
 
-    // Get the GitHub username input field on the DOM
     let usernameInput = document.getElementById('usernameInput');
-
-    // Get the value of the GitHub username input field
+    let repoNameInput = document.getElementById('userRepoInput');
     let gitHubUsername = usernameInput.value;
+    let gitHubRepoName = repoNameInput.value;
 
-    // Run GitHub API function, passing in the GitHub username
     requestUserRepos(gitHubUsername)
-        .then(response => response.json()) // parse response into json
+        .then(response => response.json())
         .then(data => {
-            // update html with data from github
-            for (let i in data) {
-                // Get the ul with id of userRepos
+            let ul = document.getElementById('userRepos');
+            ul.innerHTML = '';
 
-                if (data.message === "Not Found") {
-                    let ul = document.getElementById('userRepos');
+            if (data.message === "Not Found") {
+                let li = document.createElement('li');
+                li.classList.add('list-group-item');
+                li.innerHTML = `<p><strong>No account exists with username:</strong> ${gitHubUsername}</p>`;
+                ul.appendChild(li);
+                return;
+            }
 
-                    // Create variable that will create li's to be added to ul
+            if (gitHubRepoName) {
+                // Busca repositório específico
+                requestUserRepoByName(gitHubUsername, gitHubRepoName)
+                    .then(response => response.json())
+                    .then(data_repo => {
+                        // Cria o li principal
+                        let repoLi = document.createElement('li');
+                        repoLi.classList.add('list-group-item');
+                        repoLi.innerHTML = (`
+                            <p><strong>Repo:</strong> ${data_repo.name}</p>
+                            <p><strong>Description:</strong> ${data_repo.description}</p>
+                            <p><strong>URL:</strong> <a href="${data_repo.html_url}" target="_blank">${data_repo.html_url}</a></p>
+                            <p><strong>Commits:</strong></p>
+                        `);
+
+                        // Cria uma sublista para os commits
+                        const commitsUl = document.createElement('ul');
+                        commitsUl.classList.add('list-group', 'mt-3');
+
+                        // Busca os commits
+                        requestCommitsUserRepo(gitHubUsername, gitHubRepoName)
+                            .then(response => response.json())
+                            .then(data_repoCommits => {
+                                data_repoCommits.forEach(commitObj => {
+                                    const mensagem = commitObj.commit.message;
+                                    const autor = commitObj.commit.author.name;
+                                    const data = commitObj.commit.author.date;
+                                    const url = commitObj.html_url;
+
+                                    let commitLi = document.createElement('li');
+                                    commitLi.classList.add('list-group-item');
+                                    commitLi.innerHTML = (`
+                                        <p><strong>Commit:</strong> <a href="${url}" target="_blank">${mensagem}</a></p>
+                                        <p><strong>Autor:</strong> ${autor}</p>
+                                        <p><strong>Data:</strong> ${new Date(data).toLocaleString()}</p>
+                                    `);
+                                    commitsUl.appendChild(commitLi);
+                                });
+
+                                // Adiciona sublista ao li principal e o li à lista
+                                repoLi.appendChild(commitsUl);
+                                ul.appendChild(repoLi);
+                            })
+                            .catch(error => console.error("Erro ao buscar commits:", error));
+                    })
+                    .catch(error => console.error("Erro ao buscar repositório:", error));
+            } else {
+                // Lista todos os repositórios do usuário
+                data.forEach(repo => {
                     let li = document.createElement('li');
-
-                    // Add Bootstrap list item class to each li
-                    li.classList.add('list-group-item')
-                    // Create the html markup for each li
+                    li.classList.add('list-group-item');
                     li.innerHTML = (`
-                <p><strong>No account exists with username:</strong> ${gitHubUsername}</p>`);
-                    // Append each li to the ul
+                        <p><strong>Repo:</strong> ${repo.name}</p>
+                        <p><strong>Description:</strong> ${repo.description}</p>
+                        <p><strong>URL:</strong> <a href="${repo.html_url}" target="_blank">${repo.html_url}</a></p>
+                    `);
                     ul.appendChild(li);
-                } else {
-
-                    let ul = document.getElementById('userRepos');
-
-                    // Create variable that will create li's to be added to ul
-                    let li = document.createElement('li');
-
-                    // Add Bootstrap list item class to each li
-                    li.classList.add('list-group-item')
-
-                    // Create the html markup for each li
-                    li.innerHTML = (`
-                <p><strong>Repo:</strong> ${data[i].name}</p>
-                <p><strong>Description:</strong> ${data[i].description}</p>
-                <p><strong>URL:</strong> <a href="${data[i].html_url}">${data[i].html_url}</a></p>
-            `);
-
-                    // Append each li to the ul
-                    ul.appendChild(li);
-                }
+                });
             }
         })
-})
+        .catch(error => console.error("Erro ao buscar repositórios do usuário:", error));
+});
 
+// --- Funções de API com autenticação ---
 function requestUserRepos(username) {
-    // create a variable to hold the `Promise` returned from `fetch`
-    return Promise.resolve(fetch(`https://api.github.com/users/${username}/repos`));
+    return fetch(`https://api.github.com/users/${username}/repos`, {
+        headers: { 'Authorization': `token ${token}` }
+    });
+}
+
+function requestUserRepoByName(username, repoName) {
+    return fetch(`https://api.github.com/repos/${username}/${repoName}`, {
+        headers: { 'Authorization': `token ${token}` }
+    });
+}
+
+function requestCommitsUserRepo(username, repoName) {
+    return fetch(`https://api.github.com/repos/${username}/${repoName}/commits`, {
+        headers: { 'Authorization': `token ${token}` }
+    });
 }
