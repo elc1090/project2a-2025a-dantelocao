@@ -4,7 +4,7 @@
 
 
 #### Deploy
-Preencha aqui a URL para acesso ao site publicado
+https://dantelocao.github.io/github_api/
 
 #### Desenvolvedor(a)
 Dante Dardaque Santos
