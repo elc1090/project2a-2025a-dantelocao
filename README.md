@@ -1,44 +1,26 @@
 # Projeto2a: GitHub API e DOM Manipulation
 
-> 1. Baixe este arquivo e edite o texto em formato Markdown conforme as instruções a seguir.
-> 2. Substitua todos os blocos "Preencha aqui" por informações do seu projeto. 
-> 3. Substitua a imagem por pelo menos um screenshot do projeto (arquivo pode ser armazenado no repositório ou em URL externa). GIFs animados também são permitidos!
-> 4. Remova todas as instruções de entrega.
-> 5. Double-check: Certifique-se de que seu README.md não contenha instruções de entrega!
-> 6. Entregue este README.md dentro da pasta raiz do repositório de entrega. 
-
-![Screenshot do projeto](https://mdswanson.com/static/chops-ux-step-4.png "Screenshot do projeto").
+![ffff](https://github.com/user-attachments/assets/bacef285-c076-420d-8a1d-5bb9d1d0739a)
 
 
 #### Deploy
-
 Preencha aqui a URL para acesso ao site publicado
 
-
 #### Desenvolvedor(a)
-
-Preencha aqui seu nome
-
+Dante Dardaque Santos
 
 #### Ambiente de desenvolvimento
-
-Preencha aqui uma lista detalhada de ferramentas de desenvolvimento usadas, por exemplo:
 - VS Code
-- Outras
+- Live server extension
 
 #### Créditos
-
-Preencha aqui uma lista detalhada de recursos aproveitados no projeto, por exemplo:
-- URL de tutoriais/vídeos consultados
-- Créditos para colegas que colaboraram
-
+- Tutorial: https://codesnippet.io/github-api-tutorial
+- Código-fonte (HTML, CSS, JavaScript): https://github.com/timmywheels/github-api-tutorial
+- Exemplo de deploy em: http://www-usr.inf.ufsm.br/~andrea/elc1090-project2a
 
 #### Bastidores
-
-
-Preencha aqui um breve relato dos bastidores da realização deste exercício, com suas impressões.
-
-
+Primeira vez realizando consultas para a API do github. Realizar as consultas é bem tranquilo só tem que se tomar cuidado com os dados que você quer receber e como tratá-lo corretamente.
 
 ---
 Projeto entregue para a disciplina de [Desenvolvimento de Software para a Web](http://github.com/andreainfufsm/elc1090-2025a) em 2025a
+
